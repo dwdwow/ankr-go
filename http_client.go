@@ -8,6 +8,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -154,4 +155,15 @@ func postPages[Req paginationReqData, Resp paginationRespData](client *HTTPClien
 		}
 		results = append(results, result)
 	}
+}
+
+type Pages[Page any] struct {
+	hasNext bool
+	mu      sync.RWMutex
+}
+
+func (p *Pages[Page]) HasNext() bool {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.hasNext
 }
