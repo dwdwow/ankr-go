@@ -1,6 +1,10 @@
 package ankr
 
-func PtrFalse() *bool {
+func TruePtr() *bool {
+	return &[]bool{true}[0]
+}
+
+func FalsePtr() *bool {
 	return &[]bool{false}[0]
 }
 
