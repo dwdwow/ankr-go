@@ -160,10 +160,27 @@ func postPages[Req paginationReqData, Resp paginationRespData](client *HTTPClien
 type Pages[Page any] struct {
 	hasNext bool
 	mu      sync.RWMutex
+	next    func(ctx context.Context) (Page, bool, error)
 }
 
 func (p *Pages[Page]) HasNext() bool {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 	return p.hasNext
+}
+
+func (p *Pages[Page]) Next(ctx context.Context) (newPage Page, err error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if !p.hasNext {
+		// should never happen
+		err = fmt.Errorf("ankr: Pages has no next func")
+		return
+	}
+	page, ok, err := p.next(ctx)
+	if err != nil {
+		return
+	}
+	p.hasNext = ok
+	return page, nil
 }
