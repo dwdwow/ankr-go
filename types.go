@@ -47,9 +47,16 @@ type RPCReqBody struct {
 }
 
 type RPCRespBody[Result any] struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      int64  `json:"id"`
-	Result  Result `json:"result"`
+	JSONRPC string        `json:"jsonrpc"`
+	ID      int64         `json:"id"`
+	Result  Result        `json:"result"`
+	Error   *RPCRespError `json:"error"`
+}
+
+type RPCRespError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data"`
 }
 
 // GetNFTsByOwnerRequest represents the request parameters for ankr_getNFTsByOwner
@@ -76,6 +83,11 @@ type GetNFTsByOwnerRequest struct {
 	Filter map[string][]string `json:"filter,omitempty"`
 }
 
+// setPageToken sets the page token for pagination
+func (r *GetNFTsByOwnerRequest) setPageToken(token string) {
+	r.PageToken = token
+}
+
 // NFTTrait represents a trait/attribute of an NFT
 type NFTTrait struct {
 	// TraitType is the trait's descriptive name
@@ -97,7 +109,7 @@ type NFT struct {
 	ContractAddress string `json:"contractAddress"`
 
 	// ContractType is the type of contract - either ERC721 or ERC1155
-	ContractType int32 `json:"contractType"`
+	ContractType string `json:"contractType"`
 
 	// Name is the name of the NFT asset
 	Name string `json:"name,omitempty"`
@@ -122,6 +134,11 @@ type GetNFTsByOwnerResponse struct {
 
 	// NextPageToken is provided at the end of response for pagination
 	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetNFTsByOwnerResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetNFTMetadataRequest represents the request parameters for ankr_getNFTMetadata
@@ -206,6 +223,11 @@ type GetNFTHoldersRequest struct {
 	PageToken string `json:"pageToken,omitempty"`
 }
 
+// setPageToken sets the page token for pagination
+func (r *GetNFTHoldersRequest) setPageToken(token string) {
+	r.PageToken = token
+}
+
 // GetNFTHoldersResponse represents the response for ankr_getNFTHolders
 type GetNFTHoldersResponse struct {
 	// Holders is a list of wallet addresses that hold the NFT
@@ -213,6 +235,11 @@ type GetNFTHoldersResponse struct {
 
 	// NextPageToken is provided at the end of the response body for pagination
 	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetNFTHoldersResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetNFTTransfersRequest represents the request parameters for ankr_getNftTransfers
@@ -244,6 +271,11 @@ type GetNFTTransfersRequest struct {
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
 	PageToken string `json:"pageToken,omitempty"`
+}
+
+// setPageToken sets the page token for pagination
+func (r *GetNFTTransfersRequest) setPageToken(token string) {
+	r.PageToken = token
 }
 
 // NFTTransfer represents an NFT transfer transaction
@@ -295,6 +327,14 @@ type NFTTransfer struct {
 type GetNFTTransfersResponse struct {
 	// Transfers is a list of NFT transfer transactions
 	Transfers []NFTTransfer `json:"transfers"`
+
+	// NextPageToken is provided at the end of response for pagination
+	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetNFTTransfersResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetAccountBalanceRequest represents the request parameters for ankr_getAccountBalance
@@ -320,6 +360,11 @@ type GetAccountBalanceRequest struct {
 
 	// WalletAddress is the account address to query for balance; supports ENS
 	WalletAddress string `json:"walletAddress"`
+}
+
+// setPageToken sets the page token for pagination
+func (r *GetAccountBalanceRequest) setPageToken(token string) {
+	r.PageToken = token
 }
 
 // TokenAsset represents a token asset in account balance
@@ -371,6 +416,11 @@ type GetAccountBalanceResponse struct {
 
 	// TotalBalanceUsd is the total USD value of all assets
 	TotalBalanceUsd string `json:"totalBalanceUsd"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetAccountBalanceResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetCurrenciesRequest represents the request parameters for ankr_getCurrencies
@@ -444,6 +494,11 @@ type GetTokenHoldersRequest struct {
 	PageToken string `json:"pageToken,omitempty"`
 }
 
+// setPageToken sets the page token for pagination
+func (r *GetTokenHoldersRequest) setPageToken(token string) {
+	r.PageToken = token
+}
+
 // TokenHolder represents a token holder
 type TokenHolder struct {
 	// Balance is the token balance held by the address
@@ -477,6 +532,11 @@ type GetTokenHoldersResponse struct {
 	TokenDecimals int32 `json:"tokenDecimals"`
 }
 
+// getNextPageToken returns the next page token for pagination
+func (r *GetTokenHoldersResponse) getNextPageToken() string {
+	return r.NextPageToken
+}
+
 // GetTokenHoldersCountRequest represents the request parameters for ankr_getTokenHoldersCount
 type GetTokenHoldersCountRequest struct {
 	// Blockchain is the supported chain for the token
@@ -491,6 +551,11 @@ type GetTokenHoldersCountRequest struct {
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
 	PageToken string `json:"pageToken,omitempty"`
+}
+
+// setPageToken sets the page token for pagination
+func (r *GetTokenHoldersCountRequest) setPageToken(token string) {
+	r.PageToken = token
 }
 
 // HolderCountHistory represents the holder count history
@@ -524,6 +589,11 @@ type GetTokenHoldersCountResponse struct {
 
 	// TokenDecimals is the number of decimals for the token
 	TokenDecimals int32 `json:"tokenDecimals"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetTokenHoldersCountResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetTokenTransfersRequest represents the request parameters for ankr_getTokenTransfers
@@ -560,6 +630,11 @@ type GetTokenTransfersRequest struct {
 	// PageToken is the current page token provided in the response
 	// Can be referenced in the request to fetch the next page
 	PageToken string `json:"pageToken,omitempty"`
+}
+
+// setPageToken sets the page token for pagination
+func (r *GetTokenTransfersRequest) setPageToken(token string) {
+	r.PageToken = token
 }
 
 // TokenTransfer represents a token transfer transaction
@@ -608,6 +683,14 @@ type TokenTransfer struct {
 type GetTokenTransfersResponse struct {
 	// Transfers is a list of token transfer transactions
 	Transfers []TokenTransfer `json:"transfers"`
+
+	// NextPageToken is provided at the end of the response body for pagination
+	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetTokenTransfersResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetBlockchainStatsRequest represents the request parameters for ankr_getBlockchainStats
@@ -652,25 +735,25 @@ type GetBlocksRequest struct {
 	Blockchain Chain `json:"blockchain"`
 
 	// DecodeLogs sets to true to decode logs, or to false if you don't need this kind of info
-	DecodeLogs bool `json:"decodeLogs" default:"false"`
+	DecodeLogs bool `json:"decodeLogs,omitempty" default:"false"`
 
 	// DecodeTxData sets to true to decode transaction data, or to false if not interested in it
-	DecodeTxData bool `json:"decodeTxData" default:"false"`
+	DecodeTxData bool `json:"decodeTxData,omitempty" default:"false"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
 	DescOrder bool `json:"descOrder" default:"true"`
 
 	// FromBlock is the first block of the range
 	// Supported value formats: hex, decimal, "earliest", "latest"
-	FromBlock any `json:"fromBlock"`
+	FromBlock any `json:"fromBlock,omitempty"`
 
 	// ToBlock is the last block of the range
 	// Supported value formats: hex, decimal, "earliest", "latest"
-	ToBlock any `json:"toBlock"`
+	ToBlock any `json:"toBlock,omitempty"`
 
 	// IncludeLogs sets to true to include logs, or to false to exclude them
 	// Note that logs are stored inside transactions, so make sure includeTxs is also set to true
-	IncludeLogs bool `json:"includeLogs" default:"false"`
+	IncludeLogs bool `json:"includeLogs,omitempty" default:"false"`
 
 	// IncludeTxs sets to true to include transactions, or to false to exclude them
 	IncludeTxs bool `json:"includeTxs" default:"true"`
@@ -718,28 +801,76 @@ type BlockDetails struct {
 // Block represents a blockchain block
 type Block struct {
 	// BlockHash is the hash of the block
-	BlockHash string `json:"blockHash"`
+	BlockHash string `json:"hash"`
 
 	// BlockHeight is the height of the block
-	BlockHeight string `json:"blockHeight"`
+	BlockHeight string `json:"number"`
 
 	// BlockchainLogo is the logo URL of the blockchain
 	BlockchainLogo string `json:"blockchainLogo,omitempty"`
 
 	// BlockchainName is the name of the blockchain
-	BlockchainName string `json:"blockchainName"`
+	BlockchainName string `json:"blockchain"`
 
 	// Details contains blockchain-specific block details
 	Details BlockDetails `json:"details"`
 
+	// LogsBloom is the bloom filter for the logs of the block
+	LogsBloom string `json:"logsBloom"`
+
+	// MixHash is the mixed hash
+	MixHash string `json:"mixHash"`
+
+	// Nonce is the block nonce
+	Nonce string `json:"nonce"`
+
 	// ParentHash is the hash of the parent block
 	ParentHash string `json:"parentHash"`
+
+	// ReceiptsRoot is the root hash of the receipts trie
+	ReceiptsRoot string `json:"receiptsRoot"`
+
+	// Sha3Uncles is the SHA3 of uncles
+	Sha3Uncles string `json:"sha3Uncles"`
+
+	// StateRoot is the state root hash
+	StateRoot string `json:"stateRoot"`
+
+	// Miner is the miner address
+	Miner string `json:"miner"`
+
+	// Difficulty is the block difficulty
+	Difficulty string `json:"difficulty"`
+
+	// ExtraData is the extra data field
+	ExtraData string `json:"extraData"`
+
+	// Size is the block size
+	Size string `json:"size"`
+
+	// GasLimit is the gas limit for the block
+	GasLimit string `json:"gasLimit"`
+
+	// GasUsed is the gas used in the block
+	GasUsed string `json:"gasUsed"`
 
 	// Timestamp is the timestamp of the block
 	Timestamp string `json:"timestamp"`
 
+	// TransactionsRoot is the root hash of the transaction trie
+	TransactionsRoot string `json:"transactionsRoot"`
+
+	// TotalDifficulty is the total difficulty
+	TotalDifficulty string `json:"totalDifficulty"`
+
 	// TransactionsCount is the number of transactions in the block
 	TransactionsCount int32 `json:"transactionsCount"`
+
+	// Transactions contains the transactions in the block
+	Transactions []Transaction `json:"transactions"`
+
+	// Uncles contains the uncles block hashes
+	Uncles []any `json:"uncles"`
 }
 
 // GetBlocksResponse represents the response for ankr_getBlocks
@@ -789,6 +920,11 @@ type GetLogsRequest struct {
 
 	// Topics is the data the log contains
 	Topics [][]string `json:"topics,omitempty"`
+}
+
+// setPageToken sets the page token for pagination
+func (r *GetLogsRequest) setPageToken(token string) {
+	r.PageToken = token
 }
 
 // EventInput represents an event input parameter
@@ -873,6 +1009,11 @@ type GetLogsResponse struct {
 
 	// NextPageToken is provided at the end of the response body for pagination
 	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetLogsResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetTransactionsByHashRequest represents the request parameters for ankr_getTransactionsByHash
@@ -1055,10 +1196,23 @@ type GetTransactionsByAddressRequest struct {
 	PageToken string `json:"pageToken,omitempty"`
 }
 
+// setPageToken sets the page token for pagination
+func (r *GetTransactionsByAddressRequest) setPageToken(token string) {
+	r.PageToken = token
+}
+
 // GetTransactionsByAddressResponse represents the response for ankr_getTransactionsByAddress
 type GetTransactionsByAddressResponse struct {
 	// Transactions is the list of transactions
 	Transactions []Transaction `json:"transactions"`
+
+	// NextPageToken is provided at the end of the response body for pagination
+	NextPageToken string `json:"nextPageToken,omitempty"`
+}
+
+// getNextPageToken returns the next page token for pagination
+func (r *GetTransactionsByAddressResponse) getNextPageToken() string {
+	return r.NextPageToken
 }
 
 // GetInteractionsRequest represents the request parameters for ankr_getInteractions
