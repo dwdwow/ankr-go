@@ -107,7 +107,7 @@ type NFT struct {
 	Blockchain string `json:"blockchain"`
 
 	// CollectionName is the collection name the NFT belongs to
-	CollectionName string `json:"collectionName,omitempty"`
+	CollectionName string `json:"collectionName"`
 
 	// ContractAddress is the NFT collection's EVM-compatible contract address
 	ContractAddress string `json:"contractAddress"`
@@ -116,19 +116,19 @@ type NFT struct {
 	ContractType string `json:"contractType"`
 
 	// Name is the name of the NFT asset
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// TokenID is the ID of the NFT asset
 	TokenID string `json:"tokenId"`
 
 	// ImageURL is a URL that points to the actual digital file, usually an IPFS link
-	ImageURL string `json:"imageUrl,omitempty"`
+	ImageURL string `json:"imageUrl"`
 
 	// Symbol is the symbol of the NFT asset
-	Symbol string `json:"symbol,omitempty"`
+	Symbol string `json:"symbol"`
 
 	// Traits are the attributes of the NFT asset
-	Traits []NFTTrait `json:"traits,omitempty"`
+	Traits []NFTTrait `json:"traits"`
 }
 
 // GetNFTsByOwnerResponse represents the response for ankr_getNFTsByOwner
@@ -137,7 +137,7 @@ type GetNFTsByOwnerResponse struct {
 	Assets []NFT `json:"assets"`
 
 	// NextPageToken is provided at the end of response for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -172,19 +172,19 @@ type NFTMetadataAttributes struct {
 	ContractType string `json:"contractType"`
 
 	// TokenURL is a URL that points to the place storing an NFT's metadata
-	TokenURL string `json:"tokenUrl,omitempty"`
+	TokenURL string `json:"tokenUrl"`
 
 	// ImageURL is a URL that points to the actual digital file, usually an IPFS link
-	ImageURL string `json:"imageUrl,omitempty"`
+	ImageURL string `json:"imageUrl"`
 
 	// Name is the name of the token
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// Description is the description of the NFT
-	Description string `json:"description,omitempty"`
+	Description string `json:"description"`
 
 	// Traits is an array of pre-defined NFT traits
-	Traits []NFTTrait `json:"traits,omitempty"`
+	Traits []NFTTrait `json:"traits"`
 }
 
 // NFTMetadata represents the metadata of an NFT
@@ -238,7 +238,7 @@ type GetNFTHoldersResponse struct {
 	Holders []string `json:"holders"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -291,10 +291,10 @@ type NFTTransfer struct {
 	Blockchain string `json:"blockchain"`
 
 	// CollectionName is the name of the NFT collection
-	CollectionName string `json:"collectionName,omitempty"`
+	CollectionName string `json:"collectionName"`
 
 	// CollectionSymbol is the symbol of the NFT collection
-	CollectionSymbol string `json:"collectionSymbol,omitempty"`
+	CollectionSymbol string `json:"collectionSymbol"`
 
 	// ContractAddress is the contract address of the NFT
 	ContractAddress string `json:"contractAddress"`
@@ -303,10 +303,10 @@ type NFTTransfer struct {
 	FromAddress string `json:"fromAddress"`
 
 	// ImageURL is the URL of the NFT image
-	ImageURL string `json:"imageUrl,omitempty"`
+	ImageURL string `json:"imageUrl"`
 
 	// Name is the name of the NFT
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// Timestamp is the timestamp when the transfer occurred
 	Timestamp int64 `json:"timestamp"`
@@ -333,7 +333,7 @@ type GetNFTTransfersResponse struct {
 	Transfers []NFTTransfer `json:"transfers"`
 
 	// NextPageToken is provided at the end of response for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -392,7 +392,7 @@ type TokenAsset struct {
 	HolderAddress string `json:"holderAddress"`
 
 	// Thumbnail is the token thumbnail image URL
-	Thumbnail string `json:"thumbnail,omitempty"`
+	Thumbnail string `json:"thumbnail"`
 
 	// TokenDecimals is the number of decimals for the token
 	TokenDecimals int32 `json:"tokenDecimals"`
@@ -416,7 +416,7 @@ type GetAccountBalanceResponse struct {
 	Assets []TokenAsset `json:"assets"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 
 	// TotalBalanceUsd is the total USD value of all assets
 	TotalBalanceUsd string `json:"totalBalanceUsd"`
@@ -451,7 +451,7 @@ type Currency struct {
 	Symbol string `json:"symbol"`
 
 	// Thumbnail is the currency thumbnail image URL
-	Thumbnail string `json:"thumbnail,omitempty"`
+	Thumbnail string `json:"thumbnail"`
 }
 
 // GetCurrenciesResponse represents the response for ankr_getCurrencies
@@ -530,7 +530,7 @@ type GetTokenHoldersResponse struct {
 	HoldersCount int64 `json:"holdersCount"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 
 	// TokenDecimals is the number of decimals for the token
 	TokenDecimals int32 `json:"tokenDecimals"`
@@ -589,7 +589,7 @@ type GetTokenHoldersCountResponse struct {
 	HolderCountHistory []HolderCountHistory `json:"holderCountHistory"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 
 	// TokenDecimals is the number of decimals for the token
 	TokenDecimals int32 `json:"tokenDecimals"`
@@ -656,7 +656,7 @@ type TokenTransfer struct {
 	FromAddress string `json:"fromAddress"`
 
 	// Thumbnail is the token thumbnail image URL
-	Thumbnail string `json:"thumbnail,omitempty"`
+	Thumbnail string `json:"thumbnail"`
 
 	// Timestamp is the timestamp when the transfer occurred
 	Timestamp int64 `json:"timestamp"`
@@ -689,7 +689,7 @@ type GetTokenTransfersResponse struct {
 	Transfers []TokenTransfer `json:"transfers"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -1012,7 +1012,7 @@ type GetLogsResponse struct {
 	Logs []Log `json:"logs"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -1211,7 +1211,7 @@ type GetTransactionsByAddressResponse struct {
 	Transactions []Transaction `json:"transactions"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken,omitempty"`
+	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
