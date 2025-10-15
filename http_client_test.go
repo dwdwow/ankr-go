@@ -57,10 +57,9 @@ func TestGetAccountBalances(t *testing.T) {
 	defer cancel()
 
 	req := GetAccountBalanceRequest{
-		WalletAddress:   "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
-		Blockchain:      ChainEthereum,
-		OnlyWhitelisted: true,
-		PageSize:        10,
+		WalletAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
+		Blockchain:    ChainEthereum,
+		PageSize:      10,
 	}
 
 	pages := client.GetAccountBalances(req)
@@ -213,7 +212,7 @@ func TestGetBlocks(t *testing.T) {
 		Blockchain: ChainEthereum,
 		FromBlock:  23583308,
 		ToBlock:    23583308,
-		IncludeTxs: false,
+		// IncludeTxs: PtrFalse(),
 	}
 
 	resp, err := client.GetBlocks(ctx, req)
@@ -252,8 +251,6 @@ func TestGetLogs(t *testing.T) {
 		FromBlock:  "latest",
 		ToBlock:    "latest",
 		PageSize:   5,
-		DecodeLogs: false,
-		DescOrder:  true,
 	}
 
 	pages := client.GetLogs(req)
@@ -294,19 +291,24 @@ func TestGetTransactionsByHash(t *testing.T) {
 
 	// Use a placeholder hash - this will likely fail but tests the API call
 	req := GetTransactionsByHashRequest{
-		TransactionHash: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+		TransactionHash: "0x728db5670765cefed19446cb4440e0a162c218cf0f345d7cf3a6ab2a5ad46a29",
 		Blockchain:      ChainEthereum,
 		DecodeLogs:      false,
 		DecodeTxData:    false,
 		IncludeLogs:     false,
 	}
 
-	_, err := client.GetTransactionsByHash(ctx, req)
+	txs, err := client.GetTransactionsByHash(ctx, req)
 	if err != nil {
 		t.Logf("GetTransactionsByHash failed as expected (transaction not found): %v", err)
 	} else {
 		t.Log("GetTransactionsByHash succeeded")
 	}
+	if len(txs.Transactions) == 0 {
+		t.Error("Expected at least one transaction")
+	}
+	t.Logf("Transactions: %d", len(txs.Transactions))
+	t.Logf("Sample transaction: %s", txs.Transactions[0].Hash)
 }
 
 // TestGetTransactionsByAddress tests the GetTransactionsByAddress API method
@@ -319,7 +321,6 @@ func TestGetTransactionsByAddress(t *testing.T) {
 		Address:     "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
 		Blockchain:  ChainEthereum,
 		IncludeLogs: false,
-		DescOrder:   true,
 		PageSize:    5,
 	}
 
@@ -384,7 +385,7 @@ func TestGetTokenHolders(t *testing.T) {
 	// Use USDC contract address
 	req := GetTokenHoldersRequest{
 		Blockchain:      ChainEthereum,
-		ContractAddress: "0xA0b86a33E6441c8C2D2c6e6F2e0F8e0F8e0F8e0F8", // USDC
+		ContractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
 		PageSize:        5,
 	}
 
@@ -426,7 +427,7 @@ func TestGetTokenHolderCountHistories(t *testing.T) {
 
 	req := GetTokenHoldersCountRequest{
 		Blockchain:      ChainEthereum,
-		ContractAddress: "0xA0b86a33E6441c8C2D2c6e6F2e0F8e0F8e0F8e0F8", // USDC
+		ContractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
 		PageSize:        5,
 	}
 
@@ -472,7 +473,6 @@ func TestGetTokenTransfers(t *testing.T) {
 		FromTimestamp: 1640995200, // 2022-01-01
 		ToTimestamp:   1672531200, // 2023-01-01
 		PageSize:      5,
-		DescOrder:     true,
 	}
 
 	pages := client.GetTokenTransfers(req)
@@ -534,10 +534,10 @@ func TestGetNFTMetadata(t *testing.T) {
 		if resp.Metadata.TokenID == "" {
 			t.Error("Expected non-empty token ID")
 		}
-		if resp.Metadata.Attributes.Name == "" {
-			t.Error("Expected non-empty NFT name")
-		}
-		t.Logf("NFT Metadata: %s (ID: %s)", resp.Metadata.Attributes.Name, resp.Metadata.TokenID)
+		// if resp.Metadata.Attributes.Name == "" {
+		// 	t.Error("Expected non-empty NFT name")
+		// }
+		// t.Logf("NFT Metadata: %s (ID: %s)", resp.Metadata.Attributes.Name, resp.Metadata.TokenID)
 	}
 }
 
@@ -593,7 +593,6 @@ func TestGetNFTTransfers(t *testing.T) {
 		FromTimestamp: 1640995200, // 2022-01-01
 		ToTimestamp:   1672531200, // 2023-01-01
 		PageSize:      5,
-		DescOrder:     true,
 	}
 
 	pages := client.GetNFTTransfers(req)

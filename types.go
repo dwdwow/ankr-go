@@ -1,5 +1,9 @@
 package ankr
 
+func PtrFalse() *bool {
+	return &[]bool{false}[0]
+}
+
 // Chain represents supported blockchain networks
 type Chain string
 
@@ -62,7 +66,7 @@ type RPCRespError struct {
 // GetNFTsByOwnerRequest represents the request parameters for ankr_getNFTsByOwner
 type GetNFTsByOwnerRequest struct {
 	// WalletAddress is the account address to query for NFTs; supports ENS
-	WalletAddress string `json:"walletAddress"`
+	WalletAddress string `json:"walletAddress,omitempty"`
 
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
@@ -71,7 +75,7 @@ type GetNFTsByOwnerRequest struct {
 	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// PageSize is the number of page results (default=10, max=50)
-	PageSize int32 `json:"pageSize" default:"50"`
+	PageSize int32 `json:"pageSize,omitempty" default:"50"`
 
 	// PageToken is provided at the end of response and used to fetch next page
 	PageToken string `json:"pageToken,omitempty"`
@@ -144,22 +148,22 @@ func (r *GetNFTsByOwnerResponse) getNextPageToken() string {
 // GetNFTMetadataRequest represents the request parameters for ankr_getNFTMetadata
 type GetNFTMetadataRequest struct {
 	// Blockchain is the supported chain for the NFT
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// ContractAddress is the address of the NFT contract the metadata belongs to; supports ENS
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress,omitempty"`
 
 	// ForceFetch determines the source of NFT metadata
 	// true: fetch from the contract
 	// false: fetch from the database
-	ForceFetch bool `json:"forceFetch" default:"false"`
+	ForceFetch bool `json:"forceFetch,omitempty" default:"false"`
 
 	// SkipSyncCheck if set to true, the info will be returned regardless of indexer health
-	SkipSyncCheck bool `json:"skipSyncCheck" default:"false"`
+	SkipSyncCheck bool `json:"skipSyncCheck,omitempty" default:"false"`
 
 	// TokenID is the token ID of the NFT the metadata belongs to
 	// Created by the contract when minting the NFT
-	TokenID string `json:"tokenId"`
+	TokenID string `json:"tokenId,omitempty"`
 }
 
 // NFTMetadataAttributes represents additional information on the NFT
@@ -210,13 +214,13 @@ type GetNFTMetadataResponse struct {
 // GetNFTHoldersRequest represents the request parameters for ankr_getNFTHolders
 type GetNFTHoldersRequest struct {
 	// Blockchain is the supported blockchain for the NFT
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// ContractAddress is the contract address of the NFT collection; supports ENS
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress,omitempty"`
 
 	// PageSize is the number of results you'd like to get (max: 10000, default: 1000)
-	PageSize int32 `json:"pageSize" default:"1000"`
+	PageSize int32 `json:"pageSize,omitempty" default:"1000"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
@@ -245,13 +249,13 @@ func (r *GetNFTHoldersResponse) getNextPageToken() string {
 // GetNFTTransfersRequest represents the request parameters for ankr_getNftTransfers
 type GetNFTTransfersRequest struct {
 	// Address is an address (or list of addresses) to search for transactions
-	Address []string `json:"address"`
+	Address []string `json:"address,omitempty"`
 
 	// Blockchain is the supported blockchains to search in
 	Blockchain []Chain `json:"blockchain,omitempty"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder bool `json:"descOrder" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
 	// FromBlock narrows your search indicating the block number to start from (inclusive; >= 0)
 	FromBlock int64 `json:"fromBlock,omitempty"`
@@ -266,7 +270,7 @@ type GetNFTTransfersRequest struct {
 	ToTimestamp int64 `json:"toTimestamp,omitempty"`
 
 	// PageSize is the number of result pages you'd like to get (max: 10000, default: 100)
-	PageSize int32 `json:"pageSize" default:"100"`
+	PageSize int32 `json:"pageSize,omitempty" default:"100"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
@@ -346,10 +350,10 @@ type GetAccountBalanceRequest struct {
 	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// NativeFirst sets sorting order - native network token first (true) or not (false)
-	NativeFirst bool `json:"nativeFirst" default:"true"`
+	NativeFirst *bool `json:"nativeFirst,omitempty" default:"true"`
 
 	// OnlyWhitelisted shows only tokens listed on CoinGecko (true) or all tokens (false)
-	OnlyWhitelisted bool `json:"onlyWhitelisted" default:"true"`
+	OnlyWhitelisted *bool `json:"onlyWhitelisted,omitempty" default:"true"`
 
 	// PageSize is the number of results you'd like to get (max: all; default: all)
 	PageSize int32 `json:"pageSize,omitempty"`
@@ -359,7 +363,7 @@ type GetAccountBalanceRequest struct {
 	PageToken string `json:"pageToken,omitempty"`
 
 	// WalletAddress is the account address to query for balance; supports ENS
-	WalletAddress string `json:"walletAddress"`
+	WalletAddress string `json:"walletAddress,omitempty"`
 }
 
 // setPageToken sets the page token for pagination
@@ -426,7 +430,7 @@ func (r *GetAccountBalanceResponse) getNextPageToken() string {
 // GetCurrenciesRequest represents the request parameters for ankr_getCurrencies
 type GetCurrenciesRequest struct {
 	// Blockchain is the supported chain to get currencies for
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 }
 
 // Currency represents a currency on a blockchain
@@ -459,7 +463,7 @@ type GetCurrenciesResponse struct {
 // GetTokenPriceRequest represents the request parameters for ankr_getTokenPrice
 type GetTokenPriceRequest struct {
 	// Blockchain is the supported chain for the token
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// ContractAddress is the address of the token contract; supports ENS
 	// If not provided, returns the native coin price of the blockchain specified
@@ -481,13 +485,13 @@ type GetTokenPriceResponse struct {
 // GetTokenHoldersRequest represents the request parameters for ankr_getTokenHolders
 type GetTokenHoldersRequest struct {
 	// Blockchain is the supported chain for the token
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// ContractAddress is the address of the token contract; supports ENS
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress,omitempty"`
 
 	// PageSize is the number of results you'd like to get (max: 10000; default: 10000)
-	PageSize int32 `json:"pageSize" default:"10000"`
+	PageSize int32 `json:"pageSize,omitempty" default:"10000"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
@@ -540,13 +544,13 @@ func (r *GetTokenHoldersResponse) getNextPageToken() string {
 // GetTokenHoldersCountRequest represents the request parameters for ankr_getTokenHoldersCount
 type GetTokenHoldersCountRequest struct {
 	// Blockchain is the supported chain for the token
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// ContractAddress is the address of the token contract; supports ENS
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress,omitempty"`
 
 	// PageSize is the number of results you'd like to get (max: 10000; default: 10000)
-	PageSize int32 `json:"pageSize" default:"10000"`
+	PageSize int32 `json:"pageSize,omitempty" default:"10000"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
@@ -599,7 +603,7 @@ func (r *GetTokenHoldersCountResponse) getNextPageToken() string {
 // GetTokenTransfersRequest represents the request parameters for ankr_getTokenTransfers
 type GetTokenTransfersRequest struct {
 	// Address is an address or list of addresses to search for token transfers
-	Address []string `json:"address"`
+	Address []string `json:"address,omitempty"`
 
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
@@ -608,7 +612,7 @@ type GetTokenTransfersRequest struct {
 	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder bool `json:"descOrder" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
 	// FromBlock narrows your search indicating the block number to start from (inclusive; >= 0)
 	// Supported value formats: hex, decimal, "earliest", "latest"
@@ -625,7 +629,7 @@ type GetTokenTransfersRequest struct {
 	ToTimestamp int64 `json:"toTimestamp,omitempty"`
 
 	// PageSize is the number of result pages you'd like to get (max: 10000; default: 10000)
-	PageSize int32 `json:"pageSize" default:"10000"`
+	PageSize int32 `json:"pageSize,omitempty" default:"10000"`
 
 	// PageToken is the current page token provided in the response
 	// Can be referenced in the request to fetch the next page
@@ -732,7 +736,7 @@ type GetBlockchainStatsResponse struct {
 // GetBlocksRequest represents the request parameters for ankr_getBlocks
 type GetBlocksRequest struct {
 	// Blockchain is the supported chain for the blocks
-	Blockchain Chain `json:"blockchain"`
+	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// DecodeLogs sets to true to decode logs, or to false if you don't need this kind of info
 	DecodeLogs bool `json:"decodeLogs,omitempty" default:"false"`
@@ -741,7 +745,7 @@ type GetBlocksRequest struct {
 	DecodeTxData bool `json:"decodeTxData,omitempty" default:"false"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder bool `json:"descOrder" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
 	// FromBlock is the first block of the range
 	// Supported value formats: hex, decimal, "earliest", "latest"
@@ -756,7 +760,7 @@ type GetBlocksRequest struct {
 	IncludeLogs bool `json:"includeLogs,omitempty" default:"false"`
 
 	// IncludeTxs sets to true to include transactions, or to false to exclude them
-	IncludeTxs bool `json:"includeTxs" default:"true"`
+	IncludeTxs *bool `json:"includeTxs,omitempty" default:"true"`
 }
 
 // EthBlockDetails represents Ethereum block details
@@ -892,10 +896,10 @@ type GetLogsRequest struct {
 	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// DecodeLogs sets to true to decode logs, or to false if you don't need this kind of info
-	DecodeLogs bool `json:"decodeLogs" default:"false"`
+	DecodeLogs bool `json:"decodeLogs,omitempty" default:"false"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder bool `json:"descOrder" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
 	// FromBlock is the first block of the range
 	// Supported value formats: hex, decimal, "earliest", "latest"
@@ -1025,16 +1029,16 @@ type GetTransactionsByHashRequest struct {
 	Blockchain Chain `json:"blockchain,omitempty"`
 
 	// TransactionHash is the hash of the transaction you'd like to request details for
-	TransactionHash string `json:"transactionHash"`
+	TransactionHash string `json:"transactionHash,omitempty"`
 
 	// DecodeLogs sets to true to decode logs, or to false if you don't need this kind of info
-	DecodeLogs bool `json:"decodeLogs" default:"false"`
+	DecodeLogs bool `json:"decodeLogs,omitempty" default:"false"`
 
 	// DecodeTxData sets to true to decode transaction data, or to false if not interested in it
-	DecodeTxData bool `json:"decodeTxData" default:"false"`
+	DecodeTxData bool `json:"decodeTxData,omitempty" default:"false"`
 
 	// IncludeLogs sets to true to include logs, or to false to exclude them
-	IncludeLogs bool `json:"includeLogs" default:"false"`
+	IncludeLogs bool `json:"includeLogs,omitempty" default:"false"`
 }
 
 // MethodInput represents a method input parameter
@@ -1160,7 +1164,7 @@ type GetTransactionsByHashResponse struct {
 // GetTransactionsByAddressRequest represents the request parameters for ankr_getTransactionsByAddress
 type GetTransactionsByAddressRequest struct {
 	// Address is the address to search for transactions
-	Address string `json:"address"`
+	Address string `json:"address,omitempty"`
 
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
@@ -1183,10 +1187,10 @@ type GetTransactionsByAddressRequest struct {
 	ToTimestamp int64 `json:"toTimestamp,omitempty"`
 
 	// IncludeLogs sets to true to include logs, or to false to exclude them
-	IncludeLogs bool `json:"includeLogs" default:"false"`
+	IncludeLogs bool `json:"includeLogs,omitempty" default:"false"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder bool `json:"descOrder" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
 	// PageSize is the number of result pages you'd like to get
 	PageSize int32 `json:"pageSize,omitempty"`
@@ -1218,7 +1222,7 @@ func (r *GetTransactionsByAddressResponse) getNextPageToken() string {
 // GetInteractionsRequest represents the request parameters for ankr_getInteractions
 type GetInteractionsRequest struct {
 	// Address is the address of the wallet or contract that created the logs
-	Address string `json:"address"`
+	Address string `json:"address,omitempty"`
 }
 
 // GetInteractionsResponse represents the response for ankr_getInteractions

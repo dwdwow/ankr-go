@@ -56,6 +56,9 @@ func ApplyDefaults[T any](opts T) (result T, err error) {
 
 // setFieldValue sets a field value from a string representation
 func setFieldValue(field reflect.Value, value string) error {
+	if field.Kind() == reflect.Pointer {
+		field = field.Elem()
+	}
 	switch field.Kind() {
 	case reflect.String:
 		field.SetString(value)
@@ -87,6 +90,9 @@ func setFieldValue(field reflect.Value, value string) error {
 			return err
 		}
 		field.SetBool(boolVal)
+
+	case reflect.Invalid:
+		return nil
 
 	default:
 		panic(fmt.Sprintf("ankr: setFieldValue: unsupported field type: %s", field.Kind()))

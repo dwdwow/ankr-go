@@ -1,6 +1,10 @@
 package ankr
 
-import "testing"
+import (
+	"fmt"
+	"reflect"
+	"testing"
+)
 
 func TestApplyDefaults(t *testing.T) {
 	type TestStruct struct {
@@ -17,4 +21,14 @@ func TestApplyDefaults(t *testing.T) {
 	}
 
 	t.Logf("TestStruct: %+v", testStruct)
+}
+
+func TestX(t *testing.T) {
+	s := &[]bool{false}[0]
+	v := reflect.ValueOf(s)
+	fmt.Println(v.Kind())
+	v = v.Elem()
+	fmt.Println(v.Kind())
+	v.SetBool(true)
+	fmt.Println(*s)
 }
