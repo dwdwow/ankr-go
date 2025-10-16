@@ -120,12 +120,11 @@ func post[Req any, Resp any](ctx context.Context, client *HTTPClient, method str
 
 func postWithRetries[Req any, Resp any](ctx context.Context, client *HTTPClient, method string, params Req, retries int) (result Resp, err error) {
 	for range retries {
-		var isRPCError bool
-		result, isRPCError, err = post[Req, Resp](ctx, client, method, params)
-		if err == nil || isRPCError {
+		result, _, err = post[Req, Resp](ctx, client, method, params)
+		if err == nil {
 			return
 		}
-		slog.Error("ankr: failed to post", "error", err)
+		slog.Error("ankr: failed to post, retrying...", "error", err)
 		time.Sleep(time.Second)
 		continue
 
