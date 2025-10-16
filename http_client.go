@@ -35,7 +35,7 @@ func NewHTTPClient(config *HTTPClientConfig) *HTTPClient {
 
 	// Create HTTP client
 	httpClient := &http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 90 * time.Second,
 		Transport: &http.Transport{
 			IdleConnTimeout: 90 * time.Second,
 		},
