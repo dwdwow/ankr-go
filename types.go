@@ -138,10 +138,10 @@ type NFT struct {
 // GetNFTsByOwnerResp represents the response for ankr_getNFTsByOwner
 type GetNFTsByOwnerResp struct {
 	// Assets is the list of NFT assets
-	Assets []NFT `json:"assets"`
+	Assets []NFT `json:"assets" bson:"assets"`
 
 	// NextPageToken is provided at the end of response for pagination
-	NextPageToken string `json:"nextPageToken"`
+	NextPageToken string `json:"nextPageToken" bson:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -152,83 +152,83 @@ func (r *GetNFTsByOwnerResp) getNextPageToken() string {
 // GetNFTMetadataReq represents the request parameters for ankr_getNFTMetadata
 type GetNFTMetadataReq struct {
 	// Blockchain is the supported chain for the NFT
-	Blockchain Chain `json:"blockchain,omitempty"`
+	Blockchain Chain `json:"blockchain,omitempty" bson:"blockchain,omitempty"`
 
 	// ContractAddress is the address of the NFT contract the metadata belongs to; supports ENS
-	ContractAddress string `json:"contractAddress,omitempty"`
+	ContractAddress string `json:"contractAddress,omitempty" bson:"contractAddress,omitempty"`
 
 	// ForceFetch determines the source of NFT metadata
 	// true: fetch from the contract
 	// false: fetch from the database
-	ForceFetch bool `json:"forceFetch,omitempty" default:"false"`
+	ForceFetch bool `json:"forceFetch,omitempty" bson:"forceFetch,omitempty" default:"false"`
 
 	// SkipSyncCheck if set to true, the info will be returned regardless of indexer health
-	SkipSyncCheck bool `json:"skipSyncCheck,omitempty" default:"false"`
+	SkipSyncCheck bool `json:"skipSyncCheck,omitempty" bson:"skipSyncCheck,omitempty" default:"false"`
 
 	// TokenID is the token ID of the NFT the metadata belongs to
 	// Created by the contract when minting the NFT
-	TokenID string `json:"tokenId,omitempty"`
+	TokenID string `json:"tokenId,omitempty" bson:"tokenId,omitempty"`
 }
 
 // NFTMetadataAttributes represents additional information on the NFT
 type NFTMetadataAttributes struct {
 	// ContractType is the contract type of the NFT (e.g., ERC721, ERC1155)
-	ContractType string `json:"contractType"`
+	ContractType string `json:"contractType" bson:"contractType"`
 
 	// TokenURL is a URL that points to the place storing an NFT's metadata
-	TokenURL string `json:"tokenUrl"`
+	TokenURL string `json:"tokenUrl" bson:"tokenUrl"`
 
 	// ImageURL is a URL that points to the actual digital file, usually an IPFS link
-	ImageURL string `json:"imageUrl"`
+	ImageURL string `json:"imageUrl" bson:"imageUrl"`
 
 	// Name is the name of the token
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 
 	// Description is the description of the NFT
-	Description string `json:"description"`
+	Description string `json:"description" bson:"description"`
 
 	// Traits is an array of pre-defined NFT traits
-	Traits []NFTTrait `json:"traits"`
+	Traits []NFTTrait `json:"traits" bson:"traits"`
 }
 
 // NFTMetadata represents the metadata of an NFT
 type NFTMetadata struct {
 	// Blockchain is one of the supported chains
-	Blockchain string `json:"blockchain"`
+	Blockchain string `json:"blockchain" bson:"blockchain"`
 
 	// ContractAddress is the contract address of the NFT Collection; supports ENS
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress" bson:"contractAddress"`
 
 	// ContractType is the contract type of the NFT (e.g., ERC721, ERC1155)
-	ContractType string `json:"contractType"`
+	ContractType string `json:"contractType" bson:"contractType"`
 
 	// TokenID is the token ID of the NFT the metadata belongs to
-	TokenID string `json:"tokenId"`
+	TokenID string `json:"tokenId" bson:"tokenId"`
 
 	// Attributes contains additional information on the NFT
-	Attributes NFTMetadataAttributes `json:"attributes"`
+	Attributes NFTMetadataAttributes `json:"attributes" bson:"attributes"`
 }
 
 // GetNFTMetadataResp represents the response for ankr_getNFTMetadata
 type GetNFTMetadataResp struct {
 	// Metadata contains the NFT metadata and attributes
-	Metadata NFTMetadata `json:"metadata"`
+	Metadata NFTMetadata `json:"metadata" bson:"metadata"`
 }
 
 // GetNFTHoldersReq represents the request parameters for ankr_getNFTHolders
 type GetNFTHoldersReq struct {
 	// Blockchain is the supported blockchain for the NFT
-	Blockchain Chain `json:"blockchain,omitempty"`
+	Blockchain Chain `json:"blockchain,omitempty" bson:"blockchain,omitempty"`
 
 	// ContractAddress is the contract address of the NFT collection; supports ENS
-	ContractAddress string `json:"contractAddress,omitempty"`
+	ContractAddress string `json:"contractAddress,omitempty" bson:"contractAddress,omitempty"`
 
 	// PageSize is the number of results you'd like to get (max: 10000, default: 1000)
-	PageSize int32 `json:"pageSize,omitempty" default:"1000"`
+	PageSize int32 `json:"pageSize,omitempty" bson:"pageSize,omitempty" default:"1000"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
-	PageToken string `json:"pageToken,omitempty"`
+	PageToken string `json:"pageToken,omitempty" bson:"pageToken,omitempty"`
 }
 
 // setPageToken sets the page token for pagination
@@ -239,10 +239,10 @@ func (r *GetNFTHoldersReq) setPageToken(token string) {
 // GetNFTHoldersResp represents the response for ankr_getNFTHolders
 type GetNFTHoldersResp struct {
 	// Holders is a list of wallet addresses that hold the NFT
-	Holders []string `json:"holders"`
+	Holders []string `json:"holders" bson:"holders"`
 
 	// NextPageToken is provided at the end of the response body for pagination
-	NextPageToken string `json:"nextPageToken"`
+	NextPageToken string `json:"nextPageToken" bson:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
@@ -253,32 +253,32 @@ func (r *GetNFTHoldersResp) getNextPageToken() string {
 // GetNFTTransfersReq represents the request parameters for ankr_getNftTransfers
 type GetNFTTransfersReq struct {
 	// Address is an address (or list of addresses) to search for transactions
-	Address []string `json:"address,omitempty"`
+	Address []string `json:"address,omitempty" bson:"address,omitempty"`
 
 	// Blockchain is the supported blockchains to search in
-	Blockchain []Chain `json:"blockchain,omitempty"`
+	Blockchain []Chain `json:"blockchain,omitempty" bson:"blockchain,omitempty"`
 
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
-	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
+	DescOrder *bool `json:"descOrder,omitempty" bson:"descOrder,omitempty" default:"true"`
 
 	// FromBlock narrows your search indicating the block number to start from (inclusive; >= 0)
-	FromBlock int64 `json:"fromBlock,omitempty"`
+	FromBlock int64 `json:"fromBlock,omitempty" bson:"fromBlock,omitempty"`
 
 	// ToBlock narrows your search indicating the block number to end with (inclusive; >= 0)
-	ToBlock int64 `json:"toBlock,omitempty"`
+	ToBlock int64 `json:"toBlock,omitempty" bson:"toBlock,omitempty"`
 
 	// FromTimestamp narrows your search indicating the timestamp to start from (inclusive; >= 0)
-	FromTimestamp int64 `json:"fromTimestamp,omitempty"`
+	FromTimestamp int64 `json:"fromTimestamp,omitempty" bson:"fromTimestamp,omitempty"`
 
 	// ToTimestamp narrows your search indicating the timestamp to end with (inclusive; >= 0)
-	ToTimestamp int64 `json:"toTimestamp,omitempty"`
+	ToTimestamp int64 `json:"toTimestamp,omitempty" bson:"toTimestamp,omitempty"`
 
 	// PageSize is the number of result pages you'd like to get (max: 10000, default: 100)
-	PageSize int32 `json:"pageSize,omitempty" default:"100"`
+	PageSize int32 `json:"pageSize,omitempty" bson:"pageSize,omitempty" default:"100"`
 
 	// PageToken is the current page token provided at the end of the response body
 	// Can be referenced in the request to fetch the next page
-	PageToken string `json:"pageToken,omitempty"`
+	PageToken string `json:"pageToken,omitempty" bson:"pageToken,omitempty"`
 }
 
 // setPageToken sets the page token for pagination
