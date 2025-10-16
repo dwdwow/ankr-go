@@ -26,7 +26,7 @@ func TestGetBlockchainStats(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetBlockchainStatsRequest{
+	req := GetBlockchainStatsReq{
 		Blockchain: ChainEthereum,
 	}
 
@@ -56,7 +56,7 @@ func TestGetAccountBalances(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetAccountBalanceRequest{
+	req := GetAccountBalanceReq{
 		WalletAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
 		Blockchain:    ChainEthereum,
 		PageSize:      10,
@@ -98,7 +98,7 @@ func TestGetTokenPrice(t *testing.T) {
 	defer cancel()
 
 	// Test native token price (ETH)
-	req := GetTokenPriceRequest{
+	req := GetTokenPriceReq{
 		Blockchain: ChainEthereum,
 	}
 
@@ -132,7 +132,7 @@ func TestGetCurrencies(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetCurrenciesRequest{
+	req := GetCurrenciesReq{
 		Blockchain: ChainEthereum,
 	}
 
@@ -166,7 +166,7 @@ func TestGetNFTsByOwner(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetNFTsByOwnerRequest{
+	req := GetNFTsByOwnerReq{
 		WalletAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
 		Blockchain:    ChainEthereum,
 		PageSize:      5,
@@ -208,7 +208,7 @@ func TestGetBlocks(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetBlocksRequest{
+	req := GetBlocksReq{
 		Blockchain: ChainEthereum,
 		FromBlock:  23583308,
 		ToBlock:    23583308,
@@ -246,7 +246,7 @@ func TestGetLogs(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetLogsRequest{
+	req := GetLogsReq{
 		Blockchain: ChainEthereum,
 		FromBlock:  "latest",
 		ToBlock:    "latest",
@@ -283,14 +283,14 @@ func TestGetLogs(t *testing.T) {
 	t.Logf("Total logs found: %d", totalLogs)
 }
 
-// TestGetTransactionsByHash tests the GetTransactionsByHash API method
-func TestGetTransactionsByHash(t *testing.T) {
+// TestGetTxsByHash tests the GetTxsByHash API method
+func TestGetTxsByHash(t *testing.T) {
 	client := createTestClient(t)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// Use a placeholder hash - this will likely fail but tests the API call
-	req := GetTransactionsByHashRequest{
+	req := GetTxsByHashReq{
 		TransactionHash: "0x728db5670765cefed19446cb4440e0a162c218cf0f345d7cf3a6ab2a5ad46a29",
 		Blockchain:      ChainEthereum,
 		DecodeLogs:      false,
@@ -298,11 +298,11 @@ func TestGetTransactionsByHash(t *testing.T) {
 		IncludeLogs:     false,
 	}
 
-	txs, err := client.GetTransactionsByHash(ctx, req)
+	txs, err := client.GetTxsByHash(ctx, req)
 	if err != nil {
-		t.Logf("GetTransactionsByHash failed as expected (transaction not found): %v", err)
+		t.Logf("GetTxsByHash failed as expected (transaction not found): %v", err)
 	} else {
-		t.Log("GetTransactionsByHash succeeded")
+		t.Log("GetTxsByHash succeeded")
 	}
 	if len(txs.Transactions) == 0 {
 		t.Error("Expected at least one transaction")
@@ -311,20 +311,20 @@ func TestGetTransactionsByHash(t *testing.T) {
 	t.Logf("Sample transaction: %s", txs.Transactions[0].Hash)
 }
 
-// TestGetTransactionsByAddress tests the GetTransactionsByAddress API method
-func TestGetTransactionsByAddress(t *testing.T) {
+// TestGetTxsByAddress tests the GetTxsByAddress API method
+func TestGetTxsByAddress(t *testing.T) {
 	client := createTestClient(t)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetTransactionsByAddressRequest{
+	req := GetTxsByAddressReq{
 		Address:     "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
 		Blockchain:  ChainEthereum,
 		IncludeLogs: false,
 		PageSize:    5,
 	}
 
-	pages := client.GetTransactionsByAddress(req)
+	pages := client.GetTxsByAddress(req)
 
 	pageCount := 0
 	totalTxs := 0
@@ -360,7 +360,7 @@ func TestGetInteractions(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetInteractionsRequest{
+	req := GetInteractionsReq{
 		Address: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", // Vitalik's address
 	}
 
@@ -383,7 +383,7 @@ func TestGetTokenHolders(t *testing.T) {
 	defer cancel()
 
 	// Use USDC contract address
-	req := GetTokenHoldersRequest{
+	req := GetTokenHoldersReq{
 		Blockchain:      ChainEthereum,
 		ContractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
 		PageSize:        5,
@@ -425,7 +425,7 @@ func TestGetTokenHolderCountHistories(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetTokenHoldersCountRequest{
+	req := GetTokenHoldersCountReq{
 		Blockchain:      ChainEthereum,
 		ContractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
 		PageSize:        5,
@@ -467,7 +467,7 @@ func TestGetTokenTransfers(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetTokenTransfersRequest{
+	req := GetTokenTransfersReq{
 		Address:       []string{"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"}, // Vitalik's address
 		Blockchain:    ChainEthereum,
 		FromTimestamp: 1640995200, // 2022-01-01
@@ -516,7 +516,7 @@ func TestGetNFTMetadata(t *testing.T) {
 	defer cancel()
 
 	// Use a known NFT contract and token ID
-	req := GetNFTMetadataRequest{
+	req := GetNFTMetadataReq{
 		Blockchain:      ChainEthereum,
 		ContractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", // BAYC contract
 		TokenID:         "1",
@@ -548,7 +548,7 @@ func TestGetNFTHolders(t *testing.T) {
 	defer cancel()
 
 	// Use a known NFT contract
-	req := GetNFTHoldersRequest{
+	req := GetNFTHoldersReq{
 		Blockchain:      ChainEthereum,
 		ContractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", // BAYC contract
 		PageSize:        5,
@@ -587,7 +587,7 @@ func TestGetNFTTransfers(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	req := GetNFTTransfersRequest{
+	req := GetNFTTransfersReq{
 		Address:       []string{"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"}, // Vitalik's address
 		Blockchain:    []Chain{ChainEthereum},
 		FromTimestamp: 1640995200, // 2022-01-01

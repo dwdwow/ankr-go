@@ -53,7 +53,7 @@ func main() {
     
     // Get blockchain statistics
     ctx := context.Background()
-    req := ankr.GetBlockchainStatsRequest{
+    req := ankr.GetBlockchainStatsReq{
         Blockchain: ankr.ChainEthereum,
     }
     
@@ -70,7 +70,7 @@ func main() {
 
 ```go
 // Get NFTs by owner with automatic pagination
-req := ankr.GetNFTsByOwnerRequest{
+req := ankr.GetNFTsByOwnerReq{
     WalletAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
     Blockchain:    ankr.ChainEthereum,
     PageSize:      10,
@@ -126,7 +126,7 @@ Retrieve NFT-related data across multiple blockchains:
 
 ```go
 // Get NFT metadata
-req := ankr.GetNFTMetadataRequest{
+req := ankr.GetNFTMetadataReq{
     Blockchain:      ankr.ChainEthereum,
     ContractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", // BAYC
     TokenID:         "1",
@@ -154,7 +154,7 @@ Access token and balance information:
 
 ```go
 // Get account balances
-req := ankr.GetAccountBalanceRequest{
+req := ankr.GetAccountBalanceReq{
     WalletAddress:   "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
     Blockchain:      ankr.ChainEthereum,
     OnlyWhitelisted: &[]bool{true}[0], // Pointer type for default value true
@@ -171,13 +171,13 @@ Query blockchain data and transaction information:
 - `GetBlockchainStats()` - Get blockchain statistics
 - `GetBlocks()` - Get block information
 - `GetLogs()` - Get event logs
-- `GetTransactionsByHash()` - Get transaction by hash
-- `GetTransactionsByAddress()` - Get transactions by address
+- `GetTxsByHash()` - Get transaction by hash
+- `GetTxsByAddress()` - Get transactions by address
 - `GetInteractions()` - Get wallet interactions
 
 ```go
 // Get recent blocks
-req := ankr.GetBlocksRequest{
+req := ankr.GetBlocksReq{
     Blockchain: ankr.ChainEthereum,
     FromBlock:  "latest",
     ToBlock:    "latest",

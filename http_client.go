@@ -207,9 +207,9 @@ func (p *Pages[Page]) Next(ctx context.Context) (newPage Page, err error) {
 //   - req: Request parameters including wallet address, blockchain, page size, etc.
 //
 // Returns:
-//   - *Pages[GetNFTsByOwnerResponse]: Paginated response iterator
-func (c *HTTPClient) GetNFTsByOwner(req GetNFTsByOwnerRequest) *Pages[*GetNFTsByOwnerResponse] {
-	return newPages(makeNextPageFunc[*GetNFTsByOwnerRequest, *GetNFTsByOwnerResponse](c, "ankr_getNFTsByOwner", &req))
+//   - *Pages[GetNFTsByOwnerResp]: Paginated response iterator
+func (c *HTTPClient) GetNFTsByOwner(req GetNFTsByOwnerReq) *Pages[*GetNFTsByOwnerResp] {
+	return newPages(makeNextPageFunc[*GetNFTsByOwnerReq, *GetNFTsByOwnerResp](c, "ankr_getNFTsByOwner", &req))
 }
 
 // GetNFTMetadata retrieves metadata of a particular NFT
@@ -222,10 +222,10 @@ func (c *HTTPClient) GetNFTsByOwner(req GetNFTsByOwnerRequest) *Pages[*GetNFTsBy
 //   - req: Request parameters including blockchain, contract address, and token ID
 //
 // Returns:
-//   - *GetNFTMetadataResponse: Response containing NFT metadata
+//   - *GetNFTMetadataResp: Response containing NFT metadata
 //   - error: Error if the request fails
-func (c *HTTPClient) GetNFTMetadata(ctx context.Context, req GetNFTMetadataRequest) (*GetNFTMetadataResponse, error) {
-	return postWithRetries[GetNFTMetadataRequest, *GetNFTMetadataResponse](ctx, c, "ankr_getNFTMetadata", req, 3)
+func (c *HTTPClient) GetNFTMetadata(ctx context.Context, req GetNFTMetadataReq) (*GetNFTMetadataResp, error) {
+	return postWithRetries[GetNFTMetadataReq, *GetNFTMetadataResp](ctx, c, "ankr_getNFTMetadata", req, 3)
 }
 
 // GetNFTHolders retrieves holders of a particular NFT with automatic pagination
@@ -237,9 +237,9 @@ func (c *HTTPClient) GetNFTMetadata(ctx context.Context, req GetNFTMetadataReque
 //   - req: Request parameters including blockchain, contract address, and pagination
 //
 // Returns:
-//   - *Pages[GetNFTHoldersResponse]: Paginated response iterator
-func (c *HTTPClient) GetNFTHolders(req GetNFTHoldersRequest) *Pages[*GetNFTHoldersResponse] {
-	return newPages(makeNextPageFunc[*GetNFTHoldersRequest, *GetNFTHoldersResponse](c, "ankr_getNFTHolders", &req))
+//   - *Pages[GetNFTHoldersResp]: Paginated response iterator
+func (c *HTTPClient) GetNFTHolders(req GetNFTHoldersReq) *Pages[*GetNFTHoldersResp] {
+	return newPages(makeNextPageFunc[*GetNFTHoldersReq, *GetNFTHoldersResp](c, "ankr_getNFTHolders", &req))
 }
 
 // GetNFTTransfers retrieves NFT transfers info with automatic pagination
@@ -252,9 +252,9 @@ func (c *HTTPClient) GetNFTHolders(req GetNFTHoldersRequest) *Pages[*GetNFTHolde
 //   - req: Request parameters including addresses, blockchain(s), and range filters
 //
 // Returns:
-//   - *Pages[GetNFTTransfersResponse]: Paginated response iterator
-func (c *HTTPClient) GetNFTTransfers(req GetNFTTransfersRequest) *Pages[*GetNFTTransfersResponse] {
-	return newPages(makeNextPageFunc[*GetNFTTransfersRequest, *GetNFTTransfersResponse](c, "ankr_getNftTransfers", &req))
+//   - *Pages[GetNFTTransfersResp]: Paginated response iterator
+func (c *HTTPClient) GetNFTTransfers(req GetNFTTransfersReq) *Pages[*GetNFTTransfersResp] {
+	return newPages(makeNextPageFunc[*GetNFTTransfersReq, *GetNFTTransfersResp](c, "ankr_getNftTransfers", &req))
 }
 
 // ============================================================================
@@ -271,10 +271,10 @@ func (c *HTTPClient) GetNFTTransfers(req GetNFTTransfersRequest) *Pages[*GetNFTT
 //   - req: Request parameters including blockchain(s) to query
 //
 // Returns:
-//   - *GetBlockchainStatsResponse: Response containing blockchain statistics
+//   - *GetBlockchainStatsResp: Response containing blockchain statistics
 //   - error: Error if the request fails
-func (c *HTTPClient) GetBlockchainStats(ctx context.Context, req GetBlockchainStatsRequest) (*GetBlockchainStatsResponse, error) {
-	return postWithRetries[GetBlockchainStatsRequest, *GetBlockchainStatsResponse](ctx, c, "ankr_getBlockchainStats", req, 3)
+func (c *HTTPClient) GetBlockchainStats(ctx context.Context, req GetBlockchainStatsReq) (*GetBlockchainStatsResp, error) {
+	return postWithRetries[GetBlockchainStatsReq, *GetBlockchainStatsResp](ctx, c, "ankr_getBlockchainStats", req, 3)
 }
 
 // GetBlocks retrieves full info of blocks in a range
@@ -287,10 +287,10 @@ func (c *HTTPClient) GetBlockchainStats(ctx context.Context, req GetBlockchainSt
 //   - req: Request parameters including blockchain, block range, and decode options
 //
 // Returns:
-//   - *GetBlocksResponse: Response containing block information
+//   - *GetBlocksResp: Response containing block information
 //   - error: Error if the request fails
-func (c *HTTPClient) GetBlocks(ctx context.Context, req GetBlocksRequest) (*GetBlocksResponse, error) {
-	return postWithRetries[GetBlocksRequest, *GetBlocksResponse](ctx, c, "ankr_getBlocks", req, 3)
+func (c *HTTPClient) GetBlocks(ctx context.Context, req GetBlocksReq) (*GetBlocksResp, error) {
+	return postWithRetries[GetBlocksReq, *GetBlocksResp](ctx, c, "ankr_getBlocks", req, 3)
 }
 
 // GetLogs retrieves historical data for the specified range of blocks with automatic pagination
@@ -303,12 +303,12 @@ func (c *HTTPClient) GetBlocks(ctx context.Context, req GetBlocksRequest) (*GetB
 //   - req: Request parameters including blockchain, address filters, block/timestamp range
 //
 // Returns:
-//   - *Pages[GetLogsResponse]: Paginated response iterator
-func (c *HTTPClient) GetLogs(req GetLogsRequest) *Pages[*GetLogsResponse] {
-	return newPages(makeNextPageFunc[*GetLogsRequest, *GetLogsResponse](c, "ankr_getLogs", &req))
+//   - *Pages[GetLogsResp]: Paginated response iterator
+func (c *HTTPClient) GetLogs(req GetLogsReq) *Pages[*GetLogsResp] {
+	return newPages(makeNextPageFunc[*GetLogsReq, *GetLogsResp](c, "ankr_getLogs", &req))
 }
 
-// GetTransactionsByHash retrieves the details of transactions by hash
+// GetTxsByHash retrieves the details of transactions by hash
 //
 // This method fetches detailed transaction information including decoded logs and
 // transaction data for one or more transaction hashes across multiple chains.
@@ -318,13 +318,13 @@ func (c *HTTPClient) GetLogs(req GetLogsRequest) *Pages[*GetLogsResponse] {
 //   - req: Request parameters including transaction hash and blockchain(s)
 //
 // Returns:
-//   - *GetTransactionsByHashResponse: Response containing transaction details
+//   - *GetTxsByHashResp: Response containing transaction details
 //   - error: Error if the request fails
-func (c *HTTPClient) GetTransactionsByHash(ctx context.Context, req GetTransactionsByHashRequest) (*GetTransactionsByHashResponse, error) {
-	return postWithRetries[GetTransactionsByHashRequest, *GetTransactionsByHashResponse](ctx, c, "ankr_getTransactionsByHash", req, 3)
+func (c *HTTPClient) GetTxsByHash(ctx context.Context, req GetTxsByHashReq) (*GetTxsByHashResp, error) {
+	return postWithRetries[GetTxsByHashReq, *GetTxsByHashResp](ctx, c, "ankr_getTransactionsByHash", req, 3)
 }
 
-// GetTransactionsByAddress retrieves transactions for a specific address with automatic pagination
+// GetTxsByAddress retrieves transactions for a specific address with automatic pagination
 //
 // This method fetches all transactions involving a specific address within
 // a specified block or timestamp range across multiple chains.
@@ -334,9 +334,9 @@ func (c *HTTPClient) GetTransactionsByHash(ctx context.Context, req GetTransacti
 //   - req: Request parameters including address, blockchain(s), and range filters
 //
 // Returns:
-//   - *Pages[GetTransactionsByAddressResponse]: Paginated response iterator
-func (c *HTTPClient) GetTransactionsByAddress(req GetTransactionsByAddressRequest) *Pages[*GetTransactionsByAddressResponse] {
-	return newPages(makeNextPageFunc[*GetTransactionsByAddressRequest, *GetTransactionsByAddressResponse](c, "ankr_getTransactionsByAddress", &req))
+//   - *Pages[GetTxsByAddressResp]: Paginated response iterator
+func (c *HTTPClient) GetTxsByAddress(req GetTxsByAddressReq) *Pages[*GetTxsByAddressResp] {
+	return newPages(makeNextPageFunc[*GetTxsByAddressReq, *GetTxsByAddressResp](c, "ankr_getTransactionsByAddress", &req))
 }
 
 // GetInteractions retrieves blockchains interacted with a particular wallet
@@ -349,10 +349,10 @@ func (c *HTTPClient) GetTransactionsByAddress(req GetTransactionsByAddressReques
 //   - req: Request parameters including the wallet address
 //
 // Returns:
-//   - *GetInteractionsResponse: Response containing list of blockchains
+//   - *GetInteractionsResp: Response containing list of blockchains
 //   - error: Error if the request fails
-func (c *HTTPClient) GetInteractions(ctx context.Context, req GetInteractionsRequest) (*GetInteractionsResponse, error) {
-	return postWithRetries[GetInteractionsRequest, *GetInteractionsResponse](ctx, c, "ankr_getInteractions", req, 3)
+func (c *HTTPClient) GetInteractions(ctx context.Context, req GetInteractionsReq) (*GetInteractionsResp, error) {
+	return postWithRetries[GetInteractionsReq, *GetInteractionsResp](ctx, c, "ankr_getInteractions", req, 3)
 }
 
 // ============================================================================
@@ -368,9 +368,9 @@ func (c *HTTPClient) GetInteractions(ctx context.Context, req GetInteractionsReq
 //   - req: Request parameters including wallet address and blockchain(s)
 //
 // Returns:
-//   - *Pages[GetAccountBalanceResponse]: Paginated response iterator
-func (c *HTTPClient) GetAccountBalances(req GetAccountBalanceRequest) *Pages[*GetAccountBalanceResponse] {
-	return newPages(makeNextPageFunc[*GetAccountBalanceRequest, *GetAccountBalanceResponse](c, "ankr_getAccountBalance", &req))
+//   - *Pages[GetAccountBalanceResp]: Paginated response iterator
+func (c *HTTPClient) GetAccountBalances(req GetAccountBalanceReq) *Pages[*GetAccountBalanceResp] {
+	return newPages(makeNextPageFunc[*GetAccountBalanceReq, *GetAccountBalanceResp](c, "ankr_getAccountBalance", &req))
 }
 
 // GetCurrencies retrieves info on currencies available for a particular blockchain
@@ -383,10 +383,10 @@ func (c *HTTPClient) GetAccountBalances(req GetAccountBalanceRequest) *Pages[*Ge
 //   - req: Request parameters including the blockchain to query
 //
 // Returns:
-//   - *GetCurrenciesResponse: Response containing list of currencies
+//   - *GetCurrenciesResp: Response containing list of currencies
 //   - error: Error if the request fails
-func (c *HTTPClient) GetCurrencies(ctx context.Context, req GetCurrenciesRequest) (*GetCurrenciesResponse, error) {
-	return postWithRetries[GetCurrenciesRequest, *GetCurrenciesResponse](ctx, c, "ankr_getCurrencies", req, 3)
+func (c *HTTPClient) GetCurrencies(ctx context.Context, req GetCurrenciesReq) (*GetCurrenciesResp, error) {
+	return postWithRetries[GetCurrenciesReq, *GetCurrenciesResp](ctx, c, "ankr_getCurrencies", req, 3)
 }
 
 // GetTokenPrice retrieves the price of a particular token
@@ -399,10 +399,10 @@ func (c *HTTPClient) GetCurrencies(ctx context.Context, req GetCurrenciesRequest
 //   - req: Request parameters including blockchain and optional contract address
 //
 // Returns:
-//   - *GetTokenPriceResponse: Response containing token price information
+//   - *GetTokenPriceResp: Response containing token price information
 //   - error: Error if the request fails
-func (c *HTTPClient) GetTokenPrice(ctx context.Context, req GetTokenPriceRequest) (*GetTokenPriceResponse, error) {
-	return postWithRetries[GetTokenPriceRequest, *GetTokenPriceResponse](ctx, c, "ankr_getTokenPrice", req, 3)
+func (c *HTTPClient) GetTokenPrice(ctx context.Context, req GetTokenPriceReq) (*GetTokenPriceResp, error) {
+	return postWithRetries[GetTokenPriceReq, *GetTokenPriceResp](ctx, c, "ankr_getTokenPrice", req, 3)
 }
 
 // GetTokenHolders retrieves all token holders with automatic pagination
@@ -414,9 +414,9 @@ func (c *HTTPClient) GetTokenPrice(ctx context.Context, req GetTokenPriceRequest
 //   - req: Request parameters including contract address and blockchain
 //
 // Returns:
-//   - *Pages[GetTokenHoldersResponse]: Paginated response iterator
-func (c *HTTPClient) GetTokenHolders(req GetTokenHoldersRequest) *Pages[*GetTokenHoldersResponse] {
-	return newPages(makeNextPageFunc[*GetTokenHoldersRequest, *GetTokenHoldersResponse](c, "ankr_getTokenHolders", &req))
+//   - *Pages[GetTokenHoldersResp]: Paginated response iterator
+func (c *HTTPClient) GetTokenHolders(req GetTokenHoldersReq) *Pages[*GetTokenHoldersResp] {
+	return newPages(makeNextPageFunc[*GetTokenHoldersReq, *GetTokenHoldersResp](c, "ankr_getTokenHolders", &req))
 }
 
 // GetTokenHolderCountHistories retrieves all token holder count data with automatic pagination
@@ -428,9 +428,9 @@ func (c *HTTPClient) GetTokenHolders(req GetTokenHoldersRequest) *Pages[*GetToke
 //   - req: Request parameters including contract address and blockchain
 //
 // Returns:
-//   - *Pages[GetTokenHoldersCountResponse]: Paginated response iterator
-func (c *HTTPClient) GetTokenHolderCountHistories(req GetTokenHoldersCountRequest) *Pages[*GetTokenHoldersCountResponse] {
-	return newPages(makeNextPageFunc[*GetTokenHoldersCountRequest, *GetTokenHoldersCountResponse](c, "ankr_getTokenHoldersCount", &req))
+//   - *Pages[GetTokenHoldersCountResp]: Paginated response iterator
+func (c *HTTPClient) GetTokenHolderCountHistories(req GetTokenHoldersCountReq) *Pages[*GetTokenHoldersCountResp] {
+	return newPages(makeNextPageFunc[*GetTokenHoldersCountReq, *GetTokenHoldersCountResp](c, "ankr_getTokenHoldersCount", &req))
 }
 
 // GetTokenTransfers retrieves all token transfers with automatic pagination
@@ -443,7 +443,7 @@ func (c *HTTPClient) GetTokenHolderCountHistories(req GetTokenHoldersCountReques
 //   - req: Request parameters including addresses, blockchain(s), and range filters
 //
 // Returns:
-//   - *Pages[GetTokenTransfersResponse]: Paginated response iterator
-func (c *HTTPClient) GetTokenTransfers(req GetTokenTransfersRequest) *Pages[*GetTokenTransfersResponse] {
-	return newPages(makeNextPageFunc[*GetTokenTransfersRequest, *GetTokenTransfersResponse](c, "ankr_getTokenTransfers", &req))
+//   - *Pages[GetTokenTransfersResp]: Paginated response iterator
+func (c *HTTPClient) GetTokenTransfers(req GetTokenTransfersReq) *Pages[*GetTokenTransfersResp] {
+	return newPages(makeNextPageFunc[*GetTokenTransfersReq, *GetTokenTransfersResp](c, "ankr_getTokenTransfers", &req))
 }

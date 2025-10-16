@@ -48,95 +48,95 @@ const (
 const JSONRPC = "2.0"
 
 type RPCReqBody struct {
-	ID      int64  `json:"id"`
-	JSONRPC string `json:"jsonrpc"`
-	Method  string `json:"method"`
-	Params  any    `json:"params"`
+	ID      int64  `json:"id" bson:"id"`
+	JSONRPC string `json:"jsonrpc" bson:"jsonrpc"`
+	Method  string `json:"method" bson:"method"`
+	Params  any    `json:"params" bson:"params"`
 }
 
 type RPCRespBody[Result any] struct {
-	JSONRPC string        `json:"jsonrpc"`
-	ID      int64         `json:"id"`
-	Result  Result        `json:"result"`
-	Error   *RPCRespError `json:"error"`
+	JSONRPC string        `json:"jsonrpc" bson:"jsonrpc"`
+	ID      int64         `json:"id" bson:"id"`
+	Result  Result        `json:"result" bson:"result"`
+	Error   *RPCRespError `json:"error" bson:"error"`
 }
 
 type RPCRespError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    any    `json:"data"`
+	Code    int    `json:"code" bson:"code"`
+	Message string `json:"message" bson:"message"`
+	Data    any    `json:"data" bson:"data"`
 }
 
-// GetNFTsByOwnerRequest represents the request parameters for ankr_getNFTsByOwner
-type GetNFTsByOwnerRequest struct {
+// GetNFTsByOwnerReq represents the request parameters for ankr_getNFTsByOwner
+type GetNFTsByOwnerReq struct {
 	// WalletAddress is the account address to query for NFTs; supports ENS
-	WalletAddress string `json:"walletAddress,omitempty"`
+	WalletAddress string `json:"walletAddress,omitempty" bson:"walletAddress,omitempty"`
 
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
 	// Multiple chains: use []Chain
 	// All chains: leave empty
-	Blockchain Chain `json:"blockchain,omitempty"`
+	Blockchain Chain `json:"blockchain,omitempty" bson:"blockchain,omitempty"`
 
 	// PageSize is the number of page results (default=10, max=50)
-	PageSize int32 `json:"pageSize,omitempty" default:"50"`
+	PageSize int32 `json:"pageSize,omitempty" bson:"pageSize,omitempty" default:"50"`
 
 	// PageToken is provided at the end of response and used to fetch next page
-	PageToken string `json:"pageToken,omitempty"`
+	PageToken string `json:"pageToken,omitempty" bson:"pageToken,omitempty"`
 
 	// Filter filters the request by smart contract address and optional NFT ID
 	// Format: map[string][]string
 	// Example: {"0xd8682bfa6918b0174f287b888e765b9a1b4dc9c3": []} - all NFTs from address
 	// Example: {"0xd8682bfa6918b0174f287b888e765b9a1b4dc9c3": ["8937"]} - specific NFT
-	Filter map[string][]string `json:"filter,omitempty"`
+	Filter map[string][]string `json:"filter,omitempty" bson:"filter,omitempty"`
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetNFTsByOwnerRequest) setPageToken(token string) {
+func (r *GetNFTsByOwnerReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
 // NFTTrait represents a trait/attribute of an NFT
 type NFTTrait struct {
 	// TraitType is the trait's descriptive name
-	TraitType string `json:"trait_type"`
+	TraitType string `json:"trait_type" bson:"trait_type"`
 
 	// Value is the value description
-	Value string `json:"value"`
+	Value string `json:"value" bson:"value"`
 }
 
 // NFT represents an NFT asset
 type NFT struct {
 	// Blockchain is one of the supported chains
-	Blockchain string `json:"blockchain"`
+	Blockchain string `json:"blockchain" bson:"blockchain"`
 
 	// CollectionName is the collection name the NFT belongs to
-	CollectionName string `json:"collectionName"`
+	CollectionName string `json:"collectionName" bson:"collectionName"`
 
 	// ContractAddress is the NFT collection's EVM-compatible contract address
-	ContractAddress string `json:"contractAddress"`
+	ContractAddress string `json:"contractAddress" bson:"contractAddress"`
 
 	// ContractType is the type of contract - either ERC721 or ERC1155
-	ContractType string `json:"contractType"`
+	ContractType string `json:"contractType" bson:"contractType"`
 
 	// Name is the name of the NFT asset
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 
 	// TokenID is the ID of the NFT asset
-	TokenID string `json:"tokenId"`
+	TokenID string `json:"tokenId" bson:"tokenId"`
 
 	// ImageURL is a URL that points to the actual digital file, usually an IPFS link
-	ImageURL string `json:"imageUrl"`
+	ImageURL string `json:"imageUrl" bson:"imageUrl"`
 
 	// Symbol is the symbol of the NFT asset
-	Symbol string `json:"symbol"`
+	Symbol string `json:"symbol" bson:"symbol"`
 
 	// Traits are the attributes of the NFT asset
-	Traits []NFTTrait `json:"traits"`
+	Traits []NFTTrait `json:"traits" bson:"traits"`
 }
 
-// GetNFTsByOwnerResponse represents the response for ankr_getNFTsByOwner
-type GetNFTsByOwnerResponse struct {
+// GetNFTsByOwnerResp represents the response for ankr_getNFTsByOwner
+type GetNFTsByOwnerResp struct {
 	// Assets is the list of NFT assets
 	Assets []NFT `json:"assets"`
 
@@ -145,12 +145,12 @@ type GetNFTsByOwnerResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetNFTsByOwnerResponse) getNextPageToken() string {
+func (r *GetNFTsByOwnerResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetNFTMetadataRequest represents the request parameters for ankr_getNFTMetadata
-type GetNFTMetadataRequest struct {
+// GetNFTMetadataReq represents the request parameters for ankr_getNFTMetadata
+type GetNFTMetadataReq struct {
 	// Blockchain is the supported chain for the NFT
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -209,14 +209,14 @@ type NFTMetadata struct {
 	Attributes NFTMetadataAttributes `json:"attributes"`
 }
 
-// GetNFTMetadataResponse represents the response for ankr_getNFTMetadata
-type GetNFTMetadataResponse struct {
+// GetNFTMetadataResp represents the response for ankr_getNFTMetadata
+type GetNFTMetadataResp struct {
 	// Metadata contains the NFT metadata and attributes
 	Metadata NFTMetadata `json:"metadata"`
 }
 
-// GetNFTHoldersRequest represents the request parameters for ankr_getNFTHolders
-type GetNFTHoldersRequest struct {
+// GetNFTHoldersReq represents the request parameters for ankr_getNFTHolders
+type GetNFTHoldersReq struct {
 	// Blockchain is the supported blockchain for the NFT
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -232,12 +232,12 @@ type GetNFTHoldersRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetNFTHoldersRequest) setPageToken(token string) {
+func (r *GetNFTHoldersReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
-// GetNFTHoldersResponse represents the response for ankr_getNFTHolders
-type GetNFTHoldersResponse struct {
+// GetNFTHoldersResp represents the response for ankr_getNFTHolders
+type GetNFTHoldersResp struct {
 	// Holders is a list of wallet addresses that hold the NFT
 	Holders []string `json:"holders"`
 
@@ -246,12 +246,12 @@ type GetNFTHoldersResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetNFTHoldersResponse) getNextPageToken() string {
+func (r *GetNFTHoldersResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetNFTTransfersRequest represents the request parameters for ankr_getNftTransfers
-type GetNFTTransfersRequest struct {
+// GetNFTTransfersReq represents the request parameters for ankr_getNftTransfers
+type GetNFTTransfersReq struct {
 	// Address is an address (or list of addresses) to search for transactions
 	Address []string `json:"address,omitempty"`
 
@@ -282,7 +282,7 @@ type GetNFTTransfersRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetNFTTransfersRequest) setPageToken(token string) {
+func (r *GetNFTTransfersReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -331,8 +331,8 @@ type NFTTransfer struct {
 	Value string `json:"value"`
 }
 
-// GetNFTTransfersResponse represents the response for ankr_getNftTransfers
-type GetNFTTransfersResponse struct {
+// GetNFTTransfersResp represents the response for ankr_getNftTransfers
+type GetNFTTransfersResp struct {
 	// Transfers is a list of NFT transfer transactions
 	Transfers []NFTTransfer `json:"transfers"`
 
@@ -341,12 +341,12 @@ type GetNFTTransfersResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetNFTTransfersResponse) getNextPageToken() string {
+func (r *GetNFTTransfersResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetAccountBalanceRequest represents the request parameters for ankr_getAccountBalance
-type GetAccountBalanceRequest struct {
+// GetAccountBalanceReq represents the request parameters for ankr_getAccountBalance
+type GetAccountBalanceReq struct {
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
 	// Multiple chains: use []Chain
@@ -371,7 +371,7 @@ type GetAccountBalanceRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetAccountBalanceRequest) setPageToken(token string) {
+func (r *GetAccountBalanceReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -414,8 +414,8 @@ type TokenAsset struct {
 	TokenType string `json:"tokenType"`
 }
 
-// GetAccountBalanceResponse represents the response for ankr_getAccountBalance
-type GetAccountBalanceResponse struct {
+// GetAccountBalanceResp represents the response for ankr_getAccountBalance
+type GetAccountBalanceResp struct {
 	// Assets is the list of token assets
 	Assets []TokenAsset `json:"assets"`
 
@@ -427,12 +427,12 @@ type GetAccountBalanceResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetAccountBalanceResponse) getNextPageToken() string {
+func (r *GetAccountBalanceResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetCurrenciesRequest represents the request parameters for ankr_getCurrencies
-type GetCurrenciesRequest struct {
+// GetCurrenciesReq represents the request parameters for ankr_getCurrencies
+type GetCurrenciesReq struct {
 	// Blockchain is the supported chain to get currencies for
 	Blockchain Chain `json:"blockchain,omitempty"`
 }
@@ -458,14 +458,14 @@ type Currency struct {
 	Thumbnail string `json:"thumbnail"`
 }
 
-// GetCurrenciesResponse represents the response for ankr_getCurrencies
-type GetCurrenciesResponse struct {
+// GetCurrenciesResp represents the response for ankr_getCurrencies
+type GetCurrenciesResp struct {
 	// Currencies is the list of currencies on the blockchain
 	Currencies []Currency `json:"currencies"`
 }
 
-// GetTokenPriceRequest represents the request parameters for ankr_getTokenPrice
-type GetTokenPriceRequest struct {
+// GetTokenPriceReq represents the request parameters for ankr_getTokenPrice
+type GetTokenPriceReq struct {
 	// Blockchain is the supported chain for the token
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -474,8 +474,8 @@ type GetTokenPriceRequest struct {
 	ContractAddress string `json:"contractAddress,omitempty"`
 }
 
-// GetTokenPriceResponse represents the response for ankr_getTokenPrice
-type GetTokenPriceResponse struct {
+// GetTokenPriceResp represents the response for ankr_getTokenPrice
+type GetTokenPriceResp struct {
 	// Blockchain is the blockchain where the token exists
 	Blockchain string `json:"blockchain"`
 
@@ -486,8 +486,8 @@ type GetTokenPriceResponse struct {
 	UsdPrice string `json:"usdPrice"`
 }
 
-// GetTokenHoldersRequest represents the request parameters for ankr_getTokenHolders
-type GetTokenHoldersRequest struct {
+// GetTokenHoldersReq represents the request parameters for ankr_getTokenHolders
+type GetTokenHoldersReq struct {
 	// Blockchain is the supported chain for the token
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -503,7 +503,7 @@ type GetTokenHoldersRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetTokenHoldersRequest) setPageToken(token string) {
+func (r *GetTokenHoldersReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -519,8 +519,8 @@ type TokenHolder struct {
 	HolderAddress string `json:"holderAddress"`
 }
 
-// GetTokenHoldersResponse represents the response for ankr_getTokenHolders
-type GetTokenHoldersResponse struct {
+// GetTokenHoldersResp represents the response for ankr_getTokenHolders
+type GetTokenHoldersResp struct {
 	// Blockchain is the blockchain where the token exists
 	Blockchain string `json:"blockchain"`
 
@@ -541,12 +541,12 @@ type GetTokenHoldersResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetTokenHoldersResponse) getNextPageToken() string {
+func (r *GetTokenHoldersResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetTokenHoldersCountRequest represents the request parameters for ankr_getTokenHoldersCount
-type GetTokenHoldersCountRequest struct {
+// GetTokenHoldersCountReq represents the request parameters for ankr_getTokenHoldersCount
+type GetTokenHoldersCountReq struct {
 	// Blockchain is the supported chain for the token
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -562,7 +562,7 @@ type GetTokenHoldersCountRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetTokenHoldersCountRequest) setPageToken(token string) {
+func (r *GetTokenHoldersCountReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -581,8 +581,8 @@ type HolderCountHistory struct {
 	TotalAmountRawInteger string `json:"totalAmountRawInteger"`
 }
 
-// GetTokenHoldersCountResponse represents the response for ankr_getTokenHoldersCount
-type GetTokenHoldersCountResponse struct {
+// GetTokenHoldersCountResp represents the response for ankr_getTokenHoldersCount
+type GetTokenHoldersCountResp struct {
 	// Blockchain is the blockchain where the token exists
 	Blockchain string `json:"blockchain"`
 
@@ -600,12 +600,12 @@ type GetTokenHoldersCountResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetTokenHoldersCountResponse) getNextPageToken() string {
+func (r *GetTokenHoldersCountResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetTokenTransfersRequest represents the request parameters for ankr_getTokenTransfers
-type GetTokenTransfersRequest struct {
+// GetTokenTransfersReq represents the request parameters for ankr_getTokenTransfers
+type GetTokenTransfersReq struct {
 	// Address is an address or list of addresses to search for token transfers
 	Address []string `json:"address,omitempty"`
 
@@ -641,7 +641,7 @@ type GetTokenTransfersRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetTokenTransfersRequest) setPageToken(token string) {
+func (r *GetTokenTransfersReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -687,8 +687,8 @@ type TokenTransfer struct {
 	ValueRawInteger string `json:"valueRawInteger"`
 }
 
-// GetTokenTransfersResponse represents the response for ankr_getTokenTransfers
-type GetTokenTransfersResponse struct {
+// GetTokenTransfersResp represents the response for ankr_getTokenTransfers
+type GetTokenTransfersResp struct {
 	// Transfers is a list of token transfer transactions
 	Transfers []TokenTransfer `json:"transfers"`
 
@@ -697,12 +697,12 @@ type GetTokenTransfersResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetTokenTransfersResponse) getNextPageToken() string {
+func (r *GetTokenTransfersResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetBlockchainStatsRequest represents the request parameters for ankr_getBlockchainStats
-type GetBlockchainStatsRequest struct {
+// GetBlockchainStatsReq represents the request parameters for ankr_getBlockchainStats
+type GetBlockchainStatsReq struct {
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
 	// Multiple chains: use []Chain
@@ -731,14 +731,14 @@ type BlockchainStat struct {
 	NativeCoinUsdPrice string `json:"nativeCoinUsdPrice"`
 }
 
-// GetBlockchainStatsResponse represents the response for ankr_getBlockchainStats
-type GetBlockchainStatsResponse struct {
+// GetBlockchainStatsResp represents the response for ankr_getBlockchainStats
+type GetBlockchainStatsResp struct {
 	// Stats is the list of blockchain statistics
 	Stats []BlockchainStat `json:"stats"`
 }
 
-// GetBlocksRequest represents the request parameters for ankr_getBlocks
-type GetBlocksRequest struct {
+// GetBlocksReq represents the request parameters for ankr_getBlocks
+type GetBlocksReq struct {
 	// Blockchain is the supported chain for the blocks
 	Blockchain Chain `json:"blockchain,omitempty"`
 
@@ -875,20 +875,20 @@ type Block struct {
 	TransactionsCount int32 `json:"transactionsCount"`
 
 	// Transactions contains the transactions in the block
-	Transactions []Transaction `json:"transactions"`
+	Transactions []Tx `json:"transactions"`
 
 	// Uncles contains the uncles block hashes
 	Uncles []any `json:"uncles"`
 }
 
-// GetBlocksResponse represents the response for ankr_getBlocks
-type GetBlocksResponse struct {
+// GetBlocksResp represents the response for ankr_getBlocks
+type GetBlocksResp struct {
 	// Blocks is the list of blocks
 	Blocks []Block `json:"blocks"`
 }
 
-// GetLogsRequest represents the request parameters for ankr_getLogs
-type GetLogsRequest struct {
+// GetLogsReq represents the request parameters for ankr_getLogs
+type GetLogsReq struct {
 	// Address is a contract address or list of addresses from which the logs originate
 	// Supported value formats: hex or array of hexes
 	Address []string `json:"address,omitempty"`
@@ -931,7 +931,7 @@ type GetLogsRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetLogsRequest) setPageToken(token string) {
+func (r *GetLogsReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
@@ -1010,8 +1010,8 @@ type Log struct {
 	TransactionIndex string `json:"transactionIndex"`
 }
 
-// GetLogsResponse represents the response for ankr_getLogs
-type GetLogsResponse struct {
+// GetLogsResp represents the response for ankr_getLogs
+type GetLogsResp struct {
 	// Logs is the list of log entries
 	Logs []Log `json:"logs"`
 
@@ -1020,12 +1020,12 @@ type GetLogsResponse struct {
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetLogsResponse) getNextPageToken() string {
+func (r *GetLogsResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetTransactionsByHashRequest represents the request parameters for ankr_getTransactionsByHash
-type GetTransactionsByHashRequest struct {
+// GetTxsByHashReq represents the request parameters for ankr_getTransactionsByHash
+type GetTxsByHashReq struct {
 	// Blockchain is a chain or combination of chains to query
 	// Single chain: use Chain constants
 	// Multiple chains: use []Chain
@@ -1081,8 +1081,8 @@ type Method struct {
 	Verified bool `json:"verified"`
 }
 
-// Transaction represents a blockchain transaction
-type Transaction struct {
+// Tx represents a blockchain transaction
+type Tx struct {
 	// BlockHash is the hash of the block containing the transaction
 	BlockHash string `json:"blockHash"`
 
@@ -1159,14 +1159,14 @@ type Transaction struct {
 	Value string `json:"value"`
 }
 
-// GetTransactionsByHashResponse represents the response for ankr_getTransactionsByHash
-type GetTransactionsByHashResponse struct {
+// GetTxsByHashResp represents the response for ankr_getTransactionsByHash
+type GetTxsByHashResp struct {
 	// Transactions is the list of transactions
-	Transactions []Transaction `json:"transactions"`
+	Transactions []Tx `json:"transactions"`
 }
 
-// GetTransactionsByAddressRequest represents the request parameters for ankr_getTransactionsByAddress
-type GetTransactionsByAddressRequest struct {
+// GetTxsByAddressReq represents the request parameters for ankr_getTransactionsByAddress
+type GetTxsByAddressReq struct {
 	// Address is the address to search for transactions
 	Address string `json:"address,omitempty"`
 
@@ -1205,32 +1205,32 @@ type GetTransactionsByAddressRequest struct {
 }
 
 // setPageToken sets the page token for pagination
-func (r *GetTransactionsByAddressRequest) setPageToken(token string) {
+func (r *GetTxsByAddressReq) setPageToken(token string) {
 	r.PageToken = token
 }
 
-// GetTransactionsByAddressResponse represents the response for ankr_getTransactionsByAddress
-type GetTransactionsByAddressResponse struct {
+// GetTxsByAddressResp represents the response for ankr_getTransactionsByAddress
+type GetTxsByAddressResp struct {
 	// Transactions is the list of transactions
-	Transactions []Transaction `json:"transactions"`
+	Transactions []Tx `json:"transactions"`
 
 	// NextPageToken is provided at the end of the response body for pagination
 	NextPageToken string `json:"nextPageToken"`
 }
 
 // getNextPageToken returns the next page token for pagination
-func (r *GetTransactionsByAddressResponse) getNextPageToken() string {
+func (r *GetTxsByAddressResp) getNextPageToken() string {
 	return r.NextPageToken
 }
 
-// GetInteractionsRequest represents the request parameters for ankr_getInteractions
-type GetInteractionsRequest struct {
+// GetInteractionsReq represents the request parameters for ankr_getInteractions
+type GetInteractionsReq struct {
 	// Address is the address of the wallet or contract that created the logs
 	Address string `json:"address,omitempty"`
 }
 
-// GetInteractionsResponse represents the response for ankr_getInteractions
-type GetInteractionsResponse struct {
+// GetInteractionsResp represents the response for ankr_getInteractions
+type GetInteractionsResp struct {
 	// Blockchains is the list of blockchains interacted with the address
 	Blockchains []string `json:"blockchains"`
 }
