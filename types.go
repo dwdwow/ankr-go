@@ -803,7 +803,7 @@ type EthBlockDetails struct {
 // BlockDetails represents block details
 type BlockDetails struct {
 	// EthBlock contains Ethereum-specific block details
-	EthBlock EthBlockDetails `json:"ethBlock,omitempty"`
+	EthBlock EthBlockDetails `json:"ethBlock"`
 }
 
 // Block represents a blockchain block
@@ -912,7 +912,7 @@ type GetLogsRequest struct {
 	// FromTimestamp is the first timestamp of the range
 	FromTimestamp int64 `json:"fromTimestamp,omitempty"`
 
-	// PageSize is the number of result pages you'd like to get
+	// PageSize is the number of result pages you'd like to get (max: 10000; default: 1000)
 	PageSize int32 `json:"pageSize,omitempty"`
 
 	// PageToken is the current page token provided at the end of the response body
@@ -1196,7 +1196,7 @@ type GetTransactionsByAddressRequest struct {
 	// DescOrder chooses data order, either descending (if true) or ascending (if false)
 	DescOrder *bool `json:"descOrder,omitempty" default:"true"`
 
-	// PageSize is the number of result pages you'd like to get
+	// PageSize is the number of result pages you'd like to get (max: 10000; default: 100)
 	PageSize int32 `json:"pageSize,omitempty"`
 
 	// PageToken is the current page token provided at the end of the response body
