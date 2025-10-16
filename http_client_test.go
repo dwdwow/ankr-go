@@ -228,7 +228,7 @@ func TestGetBlocks(t *testing.T) {
 	if block.BlockHash == "" {
 		t.Error("Expected non-empty block hash")
 	}
-	if block.BlockHeight == "" {
+	if block.Number == "" {
 		t.Error("Expected non-empty block height")
 	}
 	if block.BlockchainName == "" {
@@ -236,7 +236,7 @@ func TestGetBlocks(t *testing.T) {
 	}
 
 	t.Logf("Found %d blocks", len(resp.Blocks))
-	t.Logf("Sample block: Height %s, Hash %s", block.BlockHeight, block.BlockHash)
+	t.Logf("Sample block: Height %s, Hash %s", block.Number, block.BlockHash)
 	t.Logf("Transactions: %d", len(block.Transactions))
 }
 

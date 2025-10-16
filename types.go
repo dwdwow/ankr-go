@@ -811,8 +811,8 @@ type Block struct {
 	// BlockHash is the hash of the block
 	BlockHash string `json:"hash" bson:"hash"`
 
-	// BlockHeight is the height of the block
-	BlockHeight string `json:"number" bson:"number"`
+	// Number is the height of the block
+	Number string `json:"number" bson:"number"`
 
 	// BlockchainLogo is the logo URL of the blockchain
 	BlockchainLogo string `json:"blockchainLogo,omitempty" bson:"blockchainLogo,omitempty"`
