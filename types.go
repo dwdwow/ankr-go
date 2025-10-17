@@ -1143,9 +1143,6 @@ type Tx struct {
 	// To is the recipient address
 	To string `json:"to" bson:"to"`
 
-	// TransactionHash is the transaction hash
-	TransactionHash string `json:"transactionHash" bson:"transactionHash"`
-
 	// TransactionIndex is the index of the transaction in the block
 	TransactionIndex string `json:"transactionIndex" bson:"transactionIndex"`
 
