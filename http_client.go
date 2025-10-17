@@ -51,7 +51,7 @@ func NewHTTPClient(config *HTTPClientConfig) *HTTPClient {
 // post makes a JSON-RPC post request and returns the result with generic type
 func post[Req any, Resp any](ctx context.Context, client *HTTPClient, method string, params Req) (result Resp, isRPCError bool, err error) {
 	// Rate limiting
-	client.rateLimiter.TryWait()
+	client.rateLimiter.Wait(ctx)
 
 	newParams, err := ApplyDefaults(params)
 	if err != nil {
