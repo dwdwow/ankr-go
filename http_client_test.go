@@ -15,8 +15,7 @@ func createTestClient(t *testing.T) *HTTPClient {
 	}
 
 	return NewHTTPClient(&HTTPClientConfig{
-		APIKey:          apiKey,
-		OnLimitExceeded: RateLimitBlock,
+		APIKey: apiKey,
 	})
 }
 

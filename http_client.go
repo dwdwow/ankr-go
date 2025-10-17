@@ -16,12 +16,12 @@ import (
 type HTTPClient struct {
 	uri         string
 	httpClient  *http.Client
-	rateLimiter *RateLimiter
+	rateLimiter *SimpleLimiter
 }
 
 type HTTPClientConfig struct {
-	APIKey          string
-	OnLimitExceeded RateLimitBehavior `default:"block"`
+	APIKey string
+	// OnLimitExceeded RateLimitBehavior `default:"block"`
 }
 
 // NewHTTPClient creates a new HTTP client with the given configuration
@@ -31,7 +31,7 @@ func NewHTTPClient(config *HTTPClientConfig) *HTTPClient {
 	}
 
 	// Create rate limiter
-	rateLimiter, _ := NewRateLimiter(1000, time.Minute, config.OnLimitExceeded)
+	rateLimiter := NewSimpleLimiter(time.Minute, 1000)
 
 	// Create HTTP client
 	httpClient := &http.Client{
@@ -51,13 +51,7 @@ func NewHTTPClient(config *HTTPClientConfig) *HTTPClient {
 // post makes a JSON-RPC post request and returns the result with generic type
 func post[Req any, Resp any](ctx context.Context, client *HTTPClient, method string, params Req) (result Resp, isRPCError bool, err error) {
 	// Rate limiting
-	acquired, err := client.rateLimiter.Acquire(ctx, 1, nil)
-	if err != nil {
-		return result, false, fmt.Errorf("rate limit error: %w", err)
-	}
-	if !acquired {
-		return result, false, ErrRateLimitExceeded
-	}
+	client.rateLimiter.TryWait()
 
 	newParams, err := ApplyDefaults(params)
 	if err != nil {
